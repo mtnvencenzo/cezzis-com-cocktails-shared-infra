@@ -66,7 +66,7 @@ The infrastructure is deployed using GitHub Workflows:
 ### Environment Variables
 Environment-specific configurations are stored in `terraform/environment_vars/`:
 - `prd.tfvars`: Production environment settings
-- Additional environment files as needed
+- Additional environment files as needed (right now only prd exists)
 
 ## 🔒 Security
 
