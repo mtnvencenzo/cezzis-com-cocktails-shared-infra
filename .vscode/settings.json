@@ -1,15 +1,3 @@
 {
-    "dotnet.defaultSolution": "disable",
-    "rest-client.enableTelemetry": false,
-    "rest-client.environmentVariables": {
-        "local": {
-          "host": "https://localhost:7176"
-        },
-        "prod-apim": {
-          "host": "https://api.cezzis.com/prd/cocktails"
-        }
-    },
-    "dotrush.roslyn.projectOrSolutionFiles": [
-      "cocktails.api\\Cocktails.Api.sln"
-    ]
+    "dotnet.defaultSolution": "disable"
 }

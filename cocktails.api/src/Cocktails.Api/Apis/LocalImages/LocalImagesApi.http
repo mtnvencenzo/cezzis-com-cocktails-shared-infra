@@ -1,7 +1,0 @@
-
-
-GET {{host}}/api/v1/images/traditional-absinthe-frappe-cocktail-main.webp
-X-Key: {{apimkey}}
-
-###
-
