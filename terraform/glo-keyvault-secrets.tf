@@ -21,15 +21,3 @@ resource "azurerm_key_vault_secret" "b2c_terraform_app_registration_client_secre
 
   tags = local.tags
 }
-
-resource "azurerm_key_vault_secret" "github_pat_mtnvencenzo_packages_readwrite" {
-  name         = "${var.environment}-github-pat-mtnvencenzo-packages-readwrite"
-  value        = "n/a"
-  key_vault_id = data.azurerm_key_vault.global_cocktails_keyvault.id
-
-  lifecycle {
-    ignore_changes = [value]
-  }
-
-  tags = local.tags
-}
