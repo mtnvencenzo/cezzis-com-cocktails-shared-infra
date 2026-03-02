@@ -43,6 +43,10 @@ module "aca_cocktails_api" {
     {
       name  = "cezzis-platform-onprem-sp-client-secret"
       value = "n/a"
+      tags = {
+        Application = var.domain
+        Environment = var.environment
+      }
     }
   ]
 }
