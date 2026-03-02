@@ -7,3 +7,5 @@ allowed_origins = [
   "https://localhost:4001",
   "https://localhost:4000"
 ]
+
+cezzis_platform_onprem_service_principal_display_name = "appr-vec-cezzis-platform-onprem"
