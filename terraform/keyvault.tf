@@ -19,13 +19,24 @@ module "aca_cocktails_api" {
   resource_group_location = data.azurerm_resource_group.cocktails_resource_group.location
 
   virtual_network_subnet_ids = [
-    data.azurerm_subnet.cae_subnet.id
+    # data.azurerm_subnet.cae_subnet.id
   ]
 
   secrets = [
     {
       name  = "shared-container-registry-password"
       value = data.azurerm_container_registry.shared_acr.admin_password
+    }
+  ]
+
+  secrets_values_ignored = [
+    {
+      name  = "cezzis-platform-onprem-sp-client-secret"
+      value = "n/a"
+      tags = {
+        Application = var.domain
+        Environment = var.environment
+      }
     }
   ]
 }
