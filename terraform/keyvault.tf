@@ -27,8 +27,8 @@ module "aca_cocktails_api" {
       tenant_id = data.azurerm_client_config.current.tenant_id
       object_id = data.azuread_service_principal.cezzis_platform_onprem_sp.object_id
 
-      secret_permissions = [ "Get", "List"]
-      key_permissions = [ "Get", "List"]
+      secret_permissions = ["Get", "List"]
+      key_permissions    = ["Get", "List"]
     }
   ]
 
@@ -36,17 +36,6 @@ module "aca_cocktails_api" {
     {
       name  = "shared-container-registry-password"
       value = data.azurerm_container_registry.shared_acr.admin_password
-    }
-  ]
-
-  secrets_values_ignored = [
-    {
-      name  = "cezzis-platform-onprem-sp-client-secret"
-      value = "n/a"
-      tags = {
-        Application = var.domain
-        Environment = var.environment
-      }
     }
   ]
 
