@@ -8,4 +8,4 @@ allowed_origins = [
   "https://localhost:4000"
 ]
 
-cezzis_platform_onprem_service_principal_display_name = "appr-vec-cezzis-platform-onprem"
+cezzis_platform_onprem_service_principal_object_id = "c073fb3b-6327-4e14-b514-2371b0aff26c"

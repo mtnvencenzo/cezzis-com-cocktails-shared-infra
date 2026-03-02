@@ -32,7 +32,3 @@ data "azurerm_dns_zone" "cezzis_dns_zone" {
   name                = "cezzis.com"
   resource_group_name = data.azurerm_resource_group.cocktails_global_resource_group.name
 }
-
-data "azuread_service_principal" "cezzis_platform_onprem_sp" {
-  display_name = var.cezzis_platform_onprem_service_principal_display_name
-}

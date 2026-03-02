@@ -25,7 +25,7 @@ module "aca_cocktails_api" {
   access_policies = [
     {
       tenant_id = data.azurerm_client_config.current.tenant_id
-      object_id = data.azuread_service_principal.cezzis_platform_onprem_sp.object_id
+      object_id = var.cezzis_platform_onprem_service_principal_object_id
 
       secret_permissions = ["Get", "List"]
       key_permissions    = ["Get", "List"]

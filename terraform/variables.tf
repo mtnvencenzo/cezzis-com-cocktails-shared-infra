@@ -59,7 +59,7 @@ variable "allowed_origins" {
   default = []
 }
 
-variable "cezzis_platform_onprem_service_principal_display_name" {
+variable "cezzis_platform_onprem_service_principal_object_id" {
   type        = string
-  description = "The display name of the Cezzis Platform On-Premises service principal"
+  description = "The object ID of the Cezzis Platform On-Premises service principal"
 }
