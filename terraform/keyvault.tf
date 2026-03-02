@@ -18,9 +18,9 @@ module "aca_cocktails_api" {
   resource_group_name     = data.azurerm_resource_group.cocktails_resource_group.name
   resource_group_location = data.azurerm_resource_group.cocktails_resource_group.location
 
-  # virtual_network_subnet_ids = [
-  #   data.azurerm_subnet.cae_subnet.id
-  # ]
+  virtual_network_subnet_ids = [
+    # data.azurerm_subnet.cae_subnet.id
+  ]
 
   secrets = [
     {
