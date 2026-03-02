@@ -28,4 +28,15 @@ module "aca_cocktails_api" {
       value = data.azurerm_container_registry.shared_acr.admin_password
     }
   ]
+
+  secrets_values_ignored = [
+    {
+      name  = "cezzis-platform-onprem-sp-client-secret"
+      value = "n/a"
+      tags = {
+        Application = var.domain
+        Environment = var.environment
+      }
+    }
+  ]
 }
