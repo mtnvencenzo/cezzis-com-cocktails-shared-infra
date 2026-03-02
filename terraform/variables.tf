@@ -58,3 +58,8 @@ variable "allowed_origins" {
   type    = list(string)
   default = []
 }
+
+variable "cezzis_platform_onprem_service_principal_object_id" {
+  type        = string
+  description = "The object ID of the Cezzis Platform On-Premises service principal"
+}

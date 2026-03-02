@@ -22,6 +22,16 @@ module "aca_cocktails_api" {
     # data.azurerm_subnet.cae_subnet.id
   ]
 
+  access_policies = [
+    {
+      tenant_id = data.azurerm_client_config.current.tenant_id
+      object_id = var.cezzis_platform_onprem_service_principal_object_id
+
+      secret_permissions = ["Get", "List"]
+      key_permissions    = ["Get", "List"]
+    }
+  ]
+
   secrets = [
     {
       name  = "shared-container-registry-password"
