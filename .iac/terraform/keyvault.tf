@@ -1,4 +1,4 @@
-resource "random_password" "shared-dapr-app-token" {
+resource "random_password" "shared-daprio-dapr-api-token" {
   length  = 24
   special = false
   upper   = true
@@ -6,7 +6,7 @@ resource "random_password" "shared-dapr-app-token" {
   numeric = true
 }
 
-resource "random_password" "shared-dapr-api-token" {
+resource "random_password" "shared-daprio-app-api-token" {
   length  = 24
   special = false
   upper   = true
@@ -55,12 +55,12 @@ module "aca_cocktails_api" {
       value = data.azurerm_container_registry.shared_acr.admin_password
     },
     {
-      name  = "shared-dapr-app-token"
-      value = random_password.shared-dapr-app-token.result
+      name  = "shared-daprio-dapr-api-token"
+      value = random_password.shared-daprio-dapr-api-token.result
     },
     {
-      name  = "shared-dapr-api-token"
-      value = random_password.shared-dapr-api-token.result
+      name  = "shared-daprio-app-api-token"
+      value = random_password.shared-daprio-app-api-token.result
     }
   ]
 
