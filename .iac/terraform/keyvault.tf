@@ -1,3 +1,20 @@
+resource "random_password" "shared-dapr-app-token" {
+  length  = 24
+  special = false
+  upper   = true
+  lower   = true
+  numeric = true
+}
+
+resource "random_password" "shared-dapr-api-token" {
+  length  = 24
+  special = false
+  upper   = true
+  lower   = true
+  numeric = true
+}
+
+
 module "aca_cocktails_api" {
   source = "git::ssh://git@github.com/mtnvencenzo/Terraform-Modules.git//modules/key-vault"
 
@@ -36,6 +53,14 @@ module "aca_cocktails_api" {
     {
       name  = "shared-container-registry-password"
       value = data.azurerm_container_registry.shared_acr.admin_password
+    },
+    {
+      name  = "shared-dapr-app-token"
+      value = random_password.shared-dapr-app-token.result
+    },
+    {
+      name  = "shared-dapr-api-token"
+      value = random_password.shared-dapr-api-token.result
     }
   ]
 
@@ -47,6 +72,22 @@ module "aca_cocktails_api" {
         Application = var.domain
         Environment = var.environment
       }
-    }
+    },
+    {
+      name  = "cezzis-blob-storage-connection-string-onprem"
+      value = "n/a"
+      tags = {
+        Application = var.domain
+        Environment = var.environment
+      }
+    },
+    {
+      name  = "cezzis-blob-storage-access-key-onprem"
+      value = "n/a"
+      tags = {
+        Application = var.domain
+        Environment = var.environment
+      }
+    },
   ]
 }
