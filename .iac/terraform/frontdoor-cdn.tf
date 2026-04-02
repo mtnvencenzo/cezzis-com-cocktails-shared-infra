@@ -1,33 +1,68 @@
-# module "cocktails_frontdoor_cdn_storage_account" {
-#   source = "git::ssh://git@github.com/mtnvencenzo/Terraform-Modules.git//modules/frontdoor-cdn-endpoint-with-origin"
+resource "azurerm_cdn_frontdoor_origin_group" "og_cdn_cz" {
+  name                     = "og-cdn-cz"
+  cdn_frontdoor_profile_id = data.azurerm_cdn_frontdoor_profile.global_shared_cdn.id
+  session_affinity_enabled = false
 
-#   sub                      = var.sub
-#   region                   = var.region
-#   environment              = var.environment
-#   domain                   = var.domain
-#   sequence                 = var.sequence
-#   cdn_frontdoor_profile_id = data.azurerm_cdn_frontdoor_profile.global_shared_cdn.id
-#   origin_host_name         = module.cocktails_storage_account.primary_blob_host
+  load_balancing {
+    sample_size                 = 4
+    successful_samples_required = 3
+  }
+}
 
-#   tags = local.tags
+resource "azurerm_cdn_frontdoor_origin" "origin_cdn_cz" {
+  name                          = "origin-cdn-cz"
+  cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.og_cdn_cz.id
+  enabled                       = true
 
-#   custom_domain = {
-#     dns_zone_id             = data.azurerm_dns_zone.cezzis_dns_zone.id
-#     dns_zone_name           = "cezzis.com"
-#     dns_zone_resource_group = data.azurerm_resource_group.cocktails_global_resource_group.name
-#     sub_domain              = "cdn"
-#     host_name               = "cdn.cezzis.com"
-#   }
+  certificate_name_check_enabled = true
+  host_name                      = module.cocktails_storage_account.primary_blob_host
+  origin_host_header             = module.cocktails_storage_account.primary_blob_host
+  http_port                      = 80
+  https_port                     = 443
+  priority                       = 1
+  weight                         = 1000
+}
 
-#   allowed_origins = var.allowed_origins
+resource "azurerm_cdn_frontdoor_rule_set" "rs_cdn_cz" {
+  name                     = "rscdncz"
+  cdn_frontdoor_profile_id = data.azurerm_cdn_frontdoor_profile.global_shared_cdn.id
+}
 
-#   caching_rule = {
-#     cache_duration       = "60.00:00:00"
-#     ignore_query_strings = true
-#     compression_enabled  = true
-#   }
+resource "azurerm_cdn_frontdoor_rule" "rule_cdn_cz_rewrite" {
+  name                      = "urlrewritecdncz"
+  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.rs_cdn_cz.id
+  order                     = 1
 
-#   providers = {
-#     azurerm = azurerm
-#   }
-# }
+  actions {
+    url_rewrite_action {
+      source_pattern          = "/cdn/cz/"
+      destination             = "/"
+      preserve_unmatched_path = true
+    }
+
+    route_configuration_override_action {
+      cache_behavior = "HonorOrigin"
+      cache_duration = "60.00:00:00"
+    }
+  }
+}
+
+resource "azurerm_cdn_frontdoor_route" "route_cdn_cz" {
+  name                          = "route-cdn-cz"
+  cdn_frontdoor_endpoint_id     = data.azurerm_cdn_frontdoor_endpoint.global_shared_cdn_endpoint.id
+  cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.og_cdn_cz.id
+  cdn_frontdoor_origin_ids      = [azurerm_cdn_frontdoor_origin.origin_cdn_cz.id]
+  cdn_frontdoor_rule_set_ids    = [azurerm_cdn_frontdoor_rule_set.rs_cdn_cz.id]
+  enabled                       = true
+
+  forwarding_protocol    = "HttpsOnly"
+  https_redirect_enabled = true
+  patterns_to_match      = ["/cdn/cz/*"]
+  supported_protocols    = ["Http", "Https"]
+  link_to_default_domain = true
+
+  cache {
+    query_string_caching_behavior = "IgnoreQueryString"
+    compression_enabled           = true
+  }
+}
