@@ -63,3 +63,18 @@ variable "cezzis_platform_onprem_service_principal_object_id" {
   type        = string
   description = "The object ID of the Cezzis Platform On-Premises service principal"
 }
+
+variable "include_zoho_mx_dns_records" {
+  type    = bool
+  default = false
+}
+
+variable "include_apex_domain_records" {
+  type    = bool
+  default = false
+}
+
+variable "include_google_verification_txt_record" {
+  type    = bool
+  default = false
+}
