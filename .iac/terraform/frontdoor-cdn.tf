@@ -41,7 +41,7 @@ resource "azurerm_cdn_frontdoor_rule" "rule_cdn_cz_rewrite" {
     }
 
     route_configuration_override_action {
-      cache_behavior                = "HonorOrigin"
+      cache_behavior                = "OverrideAlways"
       cache_duration                = "60.00:00:00"
       query_string_caching_behavior = "IgnoreQueryString"
     }
