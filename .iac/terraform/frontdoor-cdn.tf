@@ -41,8 +41,9 @@ resource "azurerm_cdn_frontdoor_rule" "rule_cdn_cz_rewrite" {
     }
 
     route_configuration_override_action {
-      cache_behavior = "HonorOrigin"
-      cache_duration = "60.00:00:00"
+      cache_behavior                = "HonorOrigin"
+      cache_duration                = "60.00:00:00"
+      query_string_caching_behavior = "IgnoreQueryString"
     }
   }
 }
@@ -64,5 +65,17 @@ resource "azurerm_cdn_frontdoor_route" "route_cdn_cz" {
   cache {
     query_string_caching_behavior = "IgnoreQueryString"
     compression_enabled           = true
+    content_types_to_compress = [
+      "application/javascript",
+      "application/json",
+      "application/xml",
+      "application/x-javascript",
+      "image/svg+xml",
+      "text/css",
+      "text/html",
+      "text/javascript",
+      "text/plain",
+      "text/xml",
+    ]
   }
 }
