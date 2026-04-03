@@ -90,7 +90,7 @@ module "aca_cocktails_api" {
       }
     },
     {
-      name  = "zoho_email_app_password"
+      name  = "zoho-email-app-password"
       value = "n/a"
       tags = {
         Application = var.domain
@@ -98,7 +98,7 @@ module "aca_cocktails_api" {
       }
     },
     {
-      name  = "auth0_management_client_secret"
+      name  = "auth0-management-client-secret"
       value = "n/a"
       tags = {
         Application = var.domain
