@@ -36,7 +36,10 @@ resource "azurerm_cdn_frontdoor_route" "route_apim_cocktails" {
 
   forwarding_protocol    = "HttpsOnly"
   https_redirect_enabled = true
-  patterns_to_match      = ["/${var.environment}/cocktails/api/*"]
+  patterns_to_match = [
+    "/${var.environment}/cocktails/api/*",
+    "/${var.environment}/cocktails/api-docs/*"
+  ]
   supported_protocols    = ["Http", "Https"]
   link_to_default_domain = true
 
