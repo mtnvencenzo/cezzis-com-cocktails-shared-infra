@@ -89,5 +89,33 @@ module "aca_cocktails_api" {
         Environment = var.environment
       }
     },
+    {
+      name  = "zoho_email_app_password"
+      value = "n/a"
+      tags = {
+        Application = var.domain
+        Environment = var.environment
+      }
+    },
+    {
+      name  = "auth0_management_client_secret"
+      value = "n/a"
+      tags = {
+        Application = var.domain
+        Environment = var.environment
+      }
+    }
   ]
+}
+
+
+resource "azurerm_key_vault_secret" "zoho_email_cezzi_email_app_password" {
+  name         = "zoho-email-cezzi-email-app-password"
+  value        = "n/a"
+  key_vault_id = data.azurerm_key_vault.cocktails_keyvault.id
+  tags         = local.tags
+
+  lifecycle {
+    ignore_changes = [value]
+  }
 }
