@@ -104,6 +104,30 @@ module "aca_cocktails_api" {
         Application = var.domain
         Environment = var.environment
       }
+    },
+    {
+      name  = "recaptcha-site-key"
+      value = "n/a"
+      tags = {
+        Application = var.domain
+        Environment = var.environment
+      }
+    },
+    {
+      name  = "recaptcha_site_secret"
+      value = "n/a"
+      tags = {
+        Application = var.domain
+        Environment = var.environment
+      }
+    },
+    {
+      name  = "cypress-user-1-password"
+      value = "n/a"
+      tags = {
+        Application = var.domain
+        Environment = var.environment
+      }
     }
   ]
 }
