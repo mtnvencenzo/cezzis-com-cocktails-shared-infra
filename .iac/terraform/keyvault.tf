@@ -114,7 +114,7 @@ module "aca_cocktails_api" {
       }
     },
     {
-      name  = "recaptcha_site_secret"
+      name  = "recaptcha-site-secret"
       value = "n/a"
       tags = {
         Application = var.domain
