@@ -49,3 +49,8 @@ data "azurerm_dns_zone" "cezzis_dns_zone" {
   name                = "cezzis.com"
   resource_group_name = data.azurerm_resource_group.cocktails_global_resource_group.name
 }
+
+data "azurerm_api_management" "shared_apim" {
+  name                = "apim-${var.sub}-${var.region}-${var.global_environment}-shared-${var.sequence}"
+  resource_group_name = data.azurerm_resource_group.global_shared_resource_group.name
+}

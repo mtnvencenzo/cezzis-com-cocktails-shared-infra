@@ -1,3 +1,24 @@
+# =====================================================
+# CNAME RECORD FOR AUTH0 CUSTOM DOMAIN login.cezzis.com
+# =====================================================
+module "login_cname_record" {
+  source = "git::ssh://git@github.com/mtnvencenzo/Terraform-Modules.git//modules/dns-sub-domain-record"
+
+  dns_zone = {
+    resource_group_name = data.azurerm_dns_zone.cezzis_dns_zone.resource_group_name
+    name                = data.azurerm_dns_zone.cezzis_dns_zone.name
+  }
+
+  ttl                           = 300
+  sub_domain                    = var.auth0_custom_domain_subdomain
+  record_fqdn                   = var.auth0_custom_domain_cname
+  custom_domain_verification_id = "random-string" # Not used for CNAME but required by module interface
+
+  tags = local.tags
+}
+
+
+
 # ================================
 # MX MAIL RECORD
 # ================================
@@ -36,6 +57,60 @@ module "cocktails_dns_zoho_mx_record" {
       exchange   = "mx3.zoho.com"
     }
   ]
+}
+
+# =====================================================
+# FRONT DOOR CUSTOM DOMAIN DNS VALIDATION RECORDS
+# =====================================================
+
+resource "azurerm_dns_txt_record" "frontdoor_apex_validation" {
+  count               = var.include_apex_domain_records ? 1 : 0
+  name                = "_dnsauth"
+  zone_name           = data.azurerm_dns_zone.cezzis_dns_zone.name
+  resource_group_name = data.azurerm_dns_zone.cezzis_dns_zone.resource_group_name
+  ttl                 = 3600
+  tags                = local.tags
+
+  record {
+    value = azurerm_cdn_frontdoor_custom_domain.apex_cezzis[0].validation_token
+  }
+}
+
+resource "azurerm_dns_txt_record" "frontdoor_www_validation" {
+  count               = var.include_apex_domain_records ? 1 : 0
+  name                = "_dnsauth.www"
+  zone_name           = data.azurerm_dns_zone.cezzis_dns_zone.name
+  resource_group_name = data.azurerm_dns_zone.cezzis_dns_zone.resource_group_name
+  ttl                 = 3600
+  tags                = local.tags
+
+  record {
+    value = azurerm_cdn_frontdoor_custom_domain.www_cezzis[0].validation_token
+  }
+}
+
+# =====================================================
+# FRONT DOOR DNS ROUTING RECORDS
+# =====================================================
+
+resource "azurerm_dns_cname_record" "www_frontdoor" {
+  count               = var.include_apex_domain_records ? 1 : 0
+  name                = "www"
+  zone_name           = data.azurerm_dns_zone.cezzis_dns_zone.name
+  resource_group_name = data.azurerm_dns_zone.cezzis_dns_zone.resource_group_name
+  ttl                 = 300
+  record              = data.azurerm_cdn_frontdoor_endpoint.global_shared_cdn_endpoint.host_name
+  tags                = local.tags
+}
+
+resource "azurerm_dns_a_record" "apex_frontdoor" {
+  count               = var.include_apex_domain_records ? 1 : 0
+  name                = "@"
+  zone_name           = data.azurerm_dns_zone.cezzis_dns_zone.name
+  resource_group_name = data.azurerm_dns_zone.cezzis_dns_zone.resource_group_name
+  ttl                 = 300
+  target_resource_id  = data.azurerm_cdn_frontdoor_endpoint.global_shared_cdn_endpoint.id
+  tags                = local.tags
 }
 
 # ================================

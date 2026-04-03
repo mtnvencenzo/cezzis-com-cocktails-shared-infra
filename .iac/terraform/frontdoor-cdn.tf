@@ -62,6 +62,11 @@ resource "azurerm_cdn_frontdoor_route" "route_cdn_cz" {
   supported_protocols    = ["Http", "Https"]
   link_to_default_domain = true
 
+  cdn_frontdoor_custom_domain_ids = var.include_apex_domain_records ? [
+    azurerm_cdn_frontdoor_custom_domain.apex_cezzis[0].id,
+    azurerm_cdn_frontdoor_custom_domain.www_cezzis[0].id,
+  ] : []
+
   cache {
     query_string_caching_behavior = "IgnoreQueryString"
     compression_enabled           = true
