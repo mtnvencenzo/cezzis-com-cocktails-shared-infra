@@ -78,3 +78,13 @@ variable "include_google_verification_txt_record" {
   type    = bool
   default = false
 }
+
+variable "auth0_custom_domain_cname" {
+  type        = string
+  description = "Auth0 custom domain (e.g., ...auth0.com)"
+}
+
+variable "auth0_custom_domain_subdomain" {
+  type        = string
+  description = "Auth0 custom domain (e.g., login)"
+}
