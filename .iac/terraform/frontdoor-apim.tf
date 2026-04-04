@@ -1,5 +1,5 @@
 # =====================================================
-# FRONT DOOR APIM COCKTAILS ORIGIN GROUP + ORIGIN + ROUTE
+# FRONT DOOR APIM ORIGIN GROUP + ORIGIN (shared by all API routes)
 # =====================================================
 
 resource "azurerm_cdn_frontdoor_origin_group" "og_apim_cocktails" {
@@ -27,6 +27,10 @@ resource "azurerm_cdn_frontdoor_origin" "origin_apim_cocktails" {
   weight                         = 1000
 }
 
+# =====================================================
+# FRONT DOOR APIM ROUTES
+# =====================================================
+
 resource "azurerm_cdn_frontdoor_route" "route_apim_cocktails" {
   name                          = "route-apim-cocktails"
   cdn_frontdoor_endpoint_id     = data.azurerm_cdn_frontdoor_endpoint.global_shared_cdn_endpoint.id
@@ -39,6 +43,50 @@ resource "azurerm_cdn_frontdoor_route" "route_apim_cocktails" {
   patterns_to_match = [
     "/${var.environment}/cocktails/api/*",
     "/${var.environment}/cocktails/api-docs/*"
+  ]
+  supported_protocols    = ["Http", "Https"]
+  link_to_default_domain = true
+
+  cdn_frontdoor_custom_domain_ids = var.include_apex_domain_records ? [
+    azurerm_cdn_frontdoor_custom_domain.apex_cezzis[0].id,
+    azurerm_cdn_frontdoor_custom_domain.www_cezzis[0].id,
+  ] : []
+}
+
+resource "azurerm_cdn_frontdoor_route" "route_apim_accounts" {
+  name                          = "route-apim-accounts"
+  cdn_frontdoor_endpoint_id     = data.azurerm_cdn_frontdoor_endpoint.global_shared_cdn_endpoint.id
+  cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.og_apim_cocktails.id
+  cdn_frontdoor_origin_ids      = [azurerm_cdn_frontdoor_origin.origin_apim_cocktails.id]
+  enabled                       = true
+
+  forwarding_protocol    = "HttpsOnly"
+  https_redirect_enabled = true
+  patterns_to_match = [
+    "/${var.environment}/accounts/api/*",
+    "/${var.environment}/accounts/api-docs/*"
+  ]
+  supported_protocols    = ["Http", "Https"]
+  link_to_default_domain = true
+
+  cdn_frontdoor_custom_domain_ids = var.include_apex_domain_records ? [
+    azurerm_cdn_frontdoor_custom_domain.apex_cezzis[0].id,
+    azurerm_cdn_frontdoor_custom_domain.www_cezzis[0].id,
+  ] : []
+}
+
+resource "azurerm_cdn_frontdoor_route" "route_apim_aisearch" {
+  name                          = "route-apim-aisearch"
+  cdn_frontdoor_endpoint_id     = data.azurerm_cdn_frontdoor_endpoint.global_shared_cdn_endpoint.id
+  cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.og_apim_cocktails.id
+  cdn_frontdoor_origin_ids      = [azurerm_cdn_frontdoor_origin.origin_apim_cocktails.id]
+  enabled                       = true
+
+  forwarding_protocol    = "HttpsOnly"
+  https_redirect_enabled = true
+  patterns_to_match = [
+    "/${var.environment}/aisearch/api/*",
+    "/${var.environment}/aisearch/api-docs/*"
   ]
   supported_protocols    = ["Http", "Https"]
   link_to_default_domain = true
