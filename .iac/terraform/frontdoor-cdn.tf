@@ -28,18 +28,12 @@ resource "azurerm_cdn_frontdoor_rule_set" "rs_cdn_cz" {
   cdn_frontdoor_profile_id = data.azurerm_cdn_frontdoor_profile.global_shared_cdn.id
 }
 
-resource "azurerm_cdn_frontdoor_rule" "rule_cdn_cz_rewrite" {
-  name                      = "urlrewritecdncz"
+resource "azurerm_cdn_frontdoor_rule" "rule_cdn_cz_cache" {
+  name                      = "cachecdncz"
   cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.rs_cdn_cz.id
   order                     = 1
 
   actions {
-    url_rewrite_action {
-      source_pattern          = "/cdn/cz/"
-      destination             = "/"
-      preserve_unmatched_path = true
-    }
-
     route_configuration_override_action {
       cache_behavior                = "OverrideAlways"
       cache_duration                = "60.00:00:00"
@@ -56,11 +50,12 @@ resource "azurerm_cdn_frontdoor_route" "route_cdn_cz" {
   cdn_frontdoor_rule_set_ids    = [azurerm_cdn_frontdoor_rule_set.rs_cdn_cz.id]
   enabled                       = true
 
-  forwarding_protocol    = "HttpsOnly"
-  https_redirect_enabled = true
-  patterns_to_match      = ["/cdn/cz/*"]
-  supported_protocols    = ["Http", "Https"]
-  link_to_default_domain = true
+  forwarding_protocol       = "HttpsOnly"
+  https_redirect_enabled    = true
+  patterns_to_match         = ["/cdn/cz/*"]
+  supported_protocols       = ["Http", "Https"]
+  cdn_frontdoor_origin_path = "/"
+  link_to_default_domain    = true
 
   cdn_frontdoor_custom_domain_ids = var.include_apex_domain_records ? [
     azurerm_cdn_frontdoor_custom_domain.apex_cezzis[0].id,
