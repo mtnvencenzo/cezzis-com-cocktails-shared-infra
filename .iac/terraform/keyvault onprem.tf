@@ -119,6 +119,30 @@ module "keyvault_onprem" {
         Application = var.domain
         Environment = "prm"
       }
+    },
+    {
+      name  = "auth0-cookie-secret"
+      value = "n/a"
+      tags = {
+        Application = var.domain
+        Environment = "prm"
+      }
+    },
+    {
+      name  = "auth0-web-client-secret"
+      value = "n/a"
+      tags = {
+        Application = var.domain
+        Environment = "prm"
+      }
+    },
+    {
+      name  = "cocktails-embedding-agent-oauth-client-secret"
+      value = "n/a"
+      tags = {
+        Application = var.domain
+        Environment = "prm"
+      }
     }
   ]
 }
