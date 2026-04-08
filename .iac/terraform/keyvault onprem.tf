@@ -143,6 +143,30 @@ module "keyvault_onprem" {
         Application = var.domain
         Environment = "prm"
       }
+    },
+    {
+      name  = "cocktails-api-cezzis-com-subscription-primary-key"
+      value = "n/a"
+      tags = {
+        Application = var.domain
+        Environment = "prm"
+      }
+    },
+    {
+      name  = "aisearch-api-cezzis-com-subscription-primary-key"
+      value = "n/a"
+      tags = {
+        Application = var.domain
+        Environment = "prm"
+      }
+    },
+    {
+      name  = "accounts-api-cezzis-com-subscription-primary-key"
+      value = "n/a"
+      tags = {
+        Application = var.domain
+        Environment = "prm"
+      }
     }
   ]
 }
