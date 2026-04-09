@@ -137,14 +137,6 @@ module "keyvault_onprem" {
       }
     },
     {
-      name  = "cocktails-embedding-agent-oauth-client-secret"
-      value = "n/a"
-      tags = {
-        Application = var.domain
-        Environment = "prm"
-      }
-    },
-    {
       name  = "cocktails-api-cezzis-com-subscription-primary-key"
       value = "n/a"
       tags = {
