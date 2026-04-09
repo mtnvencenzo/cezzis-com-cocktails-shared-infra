@@ -53,42 +53,10 @@ module "aca_cocktails_api" {
     {
       name  = "shared-container-registry-password"
       value = data.azurerm_container_registry.shared_acr.admin_password
-    },
-    {
-      name  = "shared-daprio-dapr-api-token"
-      value = random_password.shared-daprio-dapr-api-token.result
-    },
-    {
-      name  = "shared-daprio-app-api-token"
-      value = random_password.shared-daprio-app-api-token.result
     }
   ]
 
   secrets_values_ignored = [
-    {
-      name  = "cezzis-platform-onprem-sp-client-secret"
-      value = "n/a"
-      tags = {
-        Application = var.domain
-        Environment = var.environment
-      }
-    },
-    {
-      name  = "cezzis-blob-storage-connection-string-onprem"
-      value = "n/a"
-      tags = {
-        Application = var.domain
-        Environment = var.environment
-      }
-    },
-    {
-      name  = "cezzis-blob-storage-access-key-onprem"
-      value = "n/a"
-      tags = {
-        Application = var.domain
-        Environment = var.environment
-      }
-    },
     {
       name  = "zoho-email-app-password"
       value = "n/a"
